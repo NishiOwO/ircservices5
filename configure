@@ -773,7 +773,7 @@ elif [ "$CC" ] ; then
     log cache supplied \`"$CC'"
     CC_FLAGS=$CACHED_CC_FLAGS
 elif run gcc --version ; then
-    version=`gcc --version 2>&1 | HEAD -1 | sed 's/[^0-9]*[^0-9.]\([0-9][0-9.]*\).*/\1/'`
+    version=`gcc --version 2>&1 | HEAD -1 | sed 's/nb[0-9]//' | sed 's/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]//g' | sed 's/[^0-9]*[^0-9.]\([0-9][0-9.]*\).*/\1/'`
     vmajor=`echo "x.$version.0" | cut -d. -f2`
     vminor=`echo "x.$version.0" | cut -d. -f3`
     if test "x$version" = x || (echo "x$vmajor" | cut -c2- | grep '[^0-9]' >/dev/null 2>&1) || (echo "x$vminor" | cut -c2- | grep '[^0-9]' >/dev/null 2>&1) ; then
@@ -2736,7 +2736,7 @@ cat >Makefile.inc.new <<EOT
 # to it will be erased next time "configure" is run.
 
 CC=$CC
-BASE_CFLAGS=$CC_FLAGS
+BASE_CFLAGS=-fcommon $CC_FLAGS
 CDEFS=$CDEFS
 LFLAGS=$CC_LFLAGS$CC_DYN_LFLAGS
 LIBS=$CC_LIBS$CC_DYN_LIBS
